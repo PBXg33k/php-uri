@@ -16,7 +16,7 @@ class Uri implements CustomUriInterface
     private ?int $port = null;
     private array $query = [];
 
-    public function withScheme(string $scheme): UriInterface
+    public function withScheme(string $scheme): static
     {
         $clone = clone $this;
         $clone->scheme = strtolower($scheme);
@@ -31,7 +31,7 @@ class Uri implements CustomUriInterface
     private ?string $username = null;
     private ?string $password = null;
 
-    public function withUserInfo(string $user, ?string $password = null): UriInterface
+    public function withUserInfo(string $user, ?string $password = null): static
     {
         $clone = clone $this;
         $clone->username = $user;
@@ -61,7 +61,7 @@ class Uri implements CustomUriInterface
         return $this->password;
     }
 
-    public function withHost(string $host): UriInterface
+    public function withHost(string $host): static
     {
         $clone = clone $this;
         $clone->host = $host;
@@ -77,7 +77,7 @@ class Uri implements CustomUriInterface
      * @param int|null $port
      * @return $this
      */
-    public function withPort(?int $port): UriInterface
+    public function withPort(?int $port): static
     {
         $clone = clone $this;
         $clone->port = is_numeric($port) ? intval($port) : null;
@@ -89,7 +89,7 @@ class Uri implements CustomUriInterface
         return $this->port;
     }
 
-    public function withPath(string $path): UriInterface
+    public function withPath(string $path): static
     {
         $clone = clone $this;
         $clone->path = $path;
@@ -101,14 +101,14 @@ class Uri implements CustomUriInterface
         return $this->path;
     }
 
-    public function withQuery(string $query): UriInterface
+    public function withQuery(string $query): static
     {
         $clone = clone $this;
         $clone->setQuery($query);
         return $clone;
     }
 
-    protected function setQuery(string $query): self
+    protected function setQuery(string $query): static
     {
         parse_str($query, $this->query);
         return $this;
@@ -126,7 +126,7 @@ class Uri implements CustomUriInterface
      * @param bool $isEncoded
      * @return $this
      */
-    public function withQueryKeyValue(string $key, string $value, bool $isEncoded = false): self
+    public function withQueryKeyValue(string $key, string $value, bool $isEncoded = false): static
     {
         $clone = clone $this;
         $clone->query[$key] = ($isEncoded ? rawurldecode($value) : $value);
@@ -170,7 +170,7 @@ class Uri implements CustomUriInterface
         return $this->fragment;
     }
 
-    public function withFragment(string $fragment): UriInterface
+    public function withFragment(string $fragment): static
     {
         $clone = clone $this;
         $clone->fragment = $fragment;
@@ -252,12 +252,12 @@ class Uri implements CustomUriInterface
      * @param null|string $uriString
      * @return UriInterface
      */
-    public static function getInstanceFromString(string|null $uriString = null): UriInterface
+    public static function getInstanceFromString(string|null $uriString = null): static
     {
         return new Uri($uriString);
     }
 
-    public static function getInstanceFromUri(UriInterface $uri): UriInterface
+    public static function getInstanceFromUri(UriInterface $uri): static
     {
         return self::getInstanceFromString((string)$uri);
     }
